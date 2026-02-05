@@ -79,10 +79,9 @@ namespace Infrastructure
 
             for (int i = 0; i < subsystems.Length; i++)
             {
-                PlayerLoopSystem subSystem = subsystems[i];
-                if (subSystem.type == typeof(T))
+                if (subsystems[i].type == typeof(T))
                 {
-                    var currentSubsystems = subSystem.subSystemList;
+                    var currentSubsystems = subsystems[i].subSystemList;
                     int currentLength = currentSubsystems?.Length ?? 0;
 
                     var newSubsystems = new PlayerLoopSystem[currentLength + 1];
@@ -101,13 +100,13 @@ namespace Infrastructure
                         updateDelegate = () => callback?.Invoke()
                     };
 
-                    subSystem.subSystemList = newSubsystems;
+                    subsystems[i].subSystemList = newSubsystems;
                     break;
                 }
 
-                if (subSystem.subSystemList != null)
+                if (subsystems[i].subSystemList != null)
                 {
-                    subsystems[i] = InsertSystem<T>(subSystem, insertType, callback);
+                    subsystems[i] = InsertSystem<T>(subsystems[i], insertType, callback);
                 }
             }
 
@@ -124,15 +123,14 @@ namespace Infrastructure
 
             for (int i = 0; i < subsystems.Length; i++)
             {
-                PlayerLoopSystem subSystem = subsystems[i];
-                if (subSystem.type == typeof(T))
+                if (subsystems[i].type == typeof(T))
                 {
-                    if (subSystem.subSystemList == null)
+                    if (subsystems[i].subSystemList == null)
                         continue;
 
                     var filtered = new System.Collections.Generic.List<PlayerLoopSystem>();
-                    
-                    foreach (var subsystem in subSystem.subSystemList)
+
+                    foreach (var subsystem in subsystems[i].subSystemList)
                     {
                         if (subsystem.type != removeType)
                         {
@@ -140,13 +138,13 @@ namespace Infrastructure
                         }
                     }
 
-                    subSystem.subSystemList = filtered.Count > 0 ? filtered.ToArray() : null;
+                    subsystems[i].subSystemList = filtered.Count > 0 ? filtered.ToArray() : null;
                     break;
                 }
 
-                if (subSystem.subSystemList != null)
+                if (subsystems[i].subSystemList != null)
                 {
-                    subsystems[i] = RemoveSystem<T>(subSystem, removeType);
+                    subsystems[i] = RemoveSystem<T>(subsystems[i], removeType);
                 }
             }
 
