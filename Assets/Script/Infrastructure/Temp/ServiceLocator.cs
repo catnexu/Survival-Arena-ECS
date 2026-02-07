@@ -9,7 +9,7 @@ namespace Infrastructure
 
         public void Dispose()
         {
-            foreach ((Type key, object value) in _instanceMap)
+            foreach ((Type _, var value) in _instanceMap)
             {
                 if (value is IDisposable disposable)
                 {
@@ -20,11 +20,24 @@ namespace Infrastructure
             _instanceMap.Clear();
         }
 
-        public void Register<T>(T instance) where T : class => _instanceMap.Add(typeof(T), instance);
+        public void Register(Type type, object instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
+
+            if (!type.IsAssignableFrom(instance.GetType()))
+            {
+                throw new ArgumentException($"{instance.GetType().Name} cannot be casted to {type.Name}");
+            }
+
+            _instanceMap.Add(type, instance);
+        }
 
         public T Resolve<T>()
         {
-            if (_instanceMap.TryGetValue(typeof(T), out object instance))
+            if (_instanceMap.TryGetValue(typeof(T), out var instance))
             {
                 return (T) instance;
             }

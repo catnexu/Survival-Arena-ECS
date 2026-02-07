@@ -114,13 +114,18 @@ namespace Infrastructure
             }
 
             GameObject view = viewPool.Get();
+            if (!view.TryGetComponent(out T component))
+            {
+                viewPool.Release(view);
+                throw new Exception($"{prefab.name} does not have a component of type {typeof(T).Name}");
+            }
             view.transform.SetPositionAndRotation(position, rotation);
             if (lifeTime > 0f)
             {
                 _lifeTimeHandlers.Add(new LifeTimeHandler(this, view, lifeTime));
             }
 
-            return view.GetOrAddComponent<T>();
+            return component;
         }
 
         public void Destroy(GameObject gameObject)

@@ -1,15 +1,23 @@
-  {
-  "name": "ECS.Core",
-  "rootNamespace": "",
-  "references": [
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": false,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+{
+    "name": "ECS.Core",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e59bf9fc7d5a44b18a819a92edd46163",
+        "GUID:f5f01a091e0d746659b4380253d52f4e",
+        "GUID:a22362b82293644e1bbe51356c008d63",
+        "GUID:dd09f1c506374efbaaf678bdfc3af5a3",
+        "GUID:b0fcb140a22af74409f251e7e05d1b26",
+        "GUID:c57c939088f9450c9411444e41b09707",
+        "GUID:b823b951e35c8bf458f47073240f71da",
+        "GUID:73531898d6364baab2cf4958740b0b5b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

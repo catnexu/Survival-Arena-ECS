@@ -1,9 +1,10 @@
+using System;
+
 namespace Infrastructure
 {
     public interface IServiceLocator
     {
-        void Register<T>(T instance) where T : class;
-
         T Resolve<T>();
+        void Register(Type type, object instance);
     }
 }
