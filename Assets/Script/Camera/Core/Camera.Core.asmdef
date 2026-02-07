@@ -1,11 +1,12 @@
-{
-  "name": "ECS.Editor",
+﻿{
+  "name": "Camera.Core",
   "rootNamespace": "",
   "references": [
+    "GUID:4307f53044263cf4b835bd812fc161a4",
+    "GUID:dd09f1c506374efbaaf678bdfc3af5a3",
+    "GUID:b823b951e35c8bf458f47073240f71da"
   ],
-  "includePlatforms": [
-      "Editor"
-  ],
+  "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
   "overrideReferences": false,
