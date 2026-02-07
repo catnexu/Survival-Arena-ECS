@@ -1,7 +1,7 @@
 {
     "name": "Unit",
     "rootNamespace": "",
-    "references": ["GUID:b7fb7c08788844848d70d34c5a1f41df","GUID:dd09f1c506374efbaaf678bdfc3af5a3"],
+    "references": ["GUID:dd09f1c506374efbaaf678bdfc3af5a3"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

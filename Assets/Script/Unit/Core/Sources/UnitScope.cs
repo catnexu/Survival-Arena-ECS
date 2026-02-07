@@ -1,5 +1,4 @@
 ﻿using Infrastructure;
-using Weapon;
 
 namespace Unit
 {
