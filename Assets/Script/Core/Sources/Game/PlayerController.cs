@@ -5,11 +5,11 @@ namespace Core
 {
     internal sealed class PlayerController : IPlayerCreator
     {
-        public event Action<PlayerData> OnNewPlayerEvent;
+        public event Action<PlayerData> OnNewUnitEvent;
         
         public void Start(PlayerConfig config)
         {
-            OnNewPlayerEvent?.Invoke(new PlayerData(config.Id, config.Stats, config.Weapons));
+            OnNewUnitEvent?.Invoke(new PlayerData(config.Id, config.Stats, config.Weapons, config.Speed));
         }
     }
 }

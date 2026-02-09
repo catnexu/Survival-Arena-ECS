@@ -4,6 +4,6 @@ namespace ECS
 {
     public interface IPlayerCreator
     {
-        event Action<PlayerData> OnNewPlayerEvent;
+        event Action<PlayerData> OnNewUnitEvent;
     }
 }

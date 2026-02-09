@@ -6,7 +6,8 @@ namespace Core
     internal sealed class GameConfig : ScriptableObject
     {
         [SerializeField] private PlayerConfig _playerConfig;
-
-        public PlayerConfig PlayerUnit => _playerConfig;
+        [SerializeField] private EnemySpawnConfig _enemySpawnConfig;
+        public PlayerConfig Player => _playerConfig;
+        public EnemySpawnConfig EnemySpawn => _enemySpawnConfig;
     }
 }

@@ -1,37 +1,44 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UI
 {
     internal sealed class FieldViewProvider : MonoBehaviour, IFieldViewProvider
     {
-        public event Action<IFieldViewProvider> OnUpdate;
-        public Vector3 BottomLeft { get; private set;  }
-        public Vector3 TopRight { get; private set; }
+        public Vector3 BottomLeft => ViewToWorldPoint(_camera, new Vector2(0f, 0f));
+        public Vector3 TopRight => ViewToWorldPoint(_camera, new Vector2(1f, 1f));
 
         private Camera _camera;
-        private bool _initialized;
 
         public void Initialize(Camera viewCamera)
         {
             _camera = viewCamera;
-            _initialized = true;
-            UpdateSize();
         }
 
-        private void OnRectTransformDimensionsChange()
+        private static Vector3 ViewToWorldPoint(Camera camera,
+            Vector2 viewPoint,
+            float yHeight = 0f,
+            Camera.MonoOrStereoscopicEye eyeType = Camera.MonoOrStereoscopicEye.Mono)
         {
-            UpdateSize();
+            Ray ray = camera.ViewportPointToRay(viewPoint, eyeType);
+            return ProjectRayOnYPlane(ray, yHeight);
         }
 
-        private void UpdateSize()
+        private static Vector3 ProjectRayOnYPlane(Ray ray, float yHeight)
         {
-            if (_initialized)
+            Vector3 normalizedDirection = ray.direction.normalized;
+            Vector3 origin = ray.origin;
+            Vector3 projected;
+            if (normalizedDirection.y != 0f)
             {
-                BottomLeft = _camera.ViewportToWorldPoint(Vector3.zero);
-                TopRight = _camera.ViewportToWorldPoint(Vector3.one);
-                OnUpdate?.Invoke(this);
+                float distanceToProjection = (1f / normalizedDirection.y) * origin.y - yHeight;
+                projected = origin - normalizedDirection * distanceToProjection;
             }
+            else
+            {
+                projected = new Vector3(origin.x, 0f, origin.z);
+            }
+
+            return projected;
         }
     }
 }

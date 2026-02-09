@@ -16,6 +16,28 @@ MonoBehaviour:
     _id: Default
     _stats:
       _health: 100
-      _speed: 7
     _weapons:
     - Gun
+    _speed: 7
+  _enemySpawnConfig:
+    _enemies:
+    - _id: Enemy_1
+      _stats:
+        _health: 100
+      _weapons: []
+      _agentConfig:
+        _agentTypeId: 0
+        _baseOffset: 0
+        _speed: 3
+        _angularSpeed: 360
+        _acceleration: 3
+        _stoppingDistance: 4
+        _autoBraking: 0
+        _radius: 0.5
+        _height: 2
+        _quality: 3
+        _agentPriority: 50
+        _autoTraverseOffMeshLink: 0
+        _autoRepath: 1
+        _areaMask: 1
+    _spawnCooldown: 1

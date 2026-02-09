@@ -1,9 +1,8 @@
 namespace ECS
 {
-    internal struct UnitStatsComponent
+    internal struct UnitHealthComponent
     {
         public float Health;
         public float MaxHealth;
-        public float Speed;
     }
 }

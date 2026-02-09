@@ -31,9 +31,11 @@ namespace ECS
                 .Add(new InputMoveUpdateSystem(_serviceLocator.Resolve<IInputService>()))
                 .Add(new PlayerInitSystem(_serviceLocator.Resolve<IPlayerCreator>(), _serviceLocator.Resolve<ICameraService>(),
                     _serviceLocator.Resolve<IUnitSpawner>()))
+                .Add(new EnemyInitSystem(_serviceLocator.Resolve<IEnemyCreator>(), _serviceLocator.Resolve<IUnitSpawner>()))
                 .Add(new WeaponInitSystem(_serviceLocator.Resolve<IWeaponConfigLoader>(), _weaponMap))
                 .Add(new WeaponReloadSystem(_serviceLocator.Resolve<ITimeManager>()))
                 .Add(new PlayerSetTargetSystem(_serviceLocator.Resolve<IRandomizer>(), _weaponMap))
+                .Add(new EnemySetTargetSystem())
                 .Add(new GunShootingSystem(_serviceLocator.Resolve<IPoolService>()))
                 .Add(new ProjectileMovementSystem(_serviceLocator.Resolve<ITimeManager>()))
 #if UNITY_EDITOR

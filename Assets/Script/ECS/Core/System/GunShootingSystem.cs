@@ -86,6 +86,7 @@ namespace ECS
                     damageEvent.To = otherView.Entity;
                 }
 
+                Unsubscribe(view);
                 _destroyPool.Value.Add(entity);
             }
             else

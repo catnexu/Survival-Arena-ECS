@@ -1,0 +1,19 @@
+{
+    "name": "Navigation.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:aec93830d5674831890f4df82ad648a3",
+        "GUID:eb83b3b4e58fb78419fa6b9f84764760"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

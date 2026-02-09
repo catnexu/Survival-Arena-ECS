@@ -17,8 +17,9 @@ namespace ECS
         private readonly EcsPoolInject<PlayerTag> _playerTagPool = default;
         private readonly EcsPoolInject<RigidbodyComponent> _rbPool = default;
         private readonly EcsPoolInject<TransformComponent> _transformPool = default;
-        private readonly EcsPoolInject<UnitStatsComponent> _statsPool = default;
+        private readonly EcsPoolInject<UnitHealthComponent> _statsPool = default;
         private readonly EcsPoolInject<LayerComponent> _layerPool = default;
+        private readonly EcsPoolInject<UnitSpeedComponent> _speedPool = default;
 
         private readonly IPlayerCreator _creator;
         private readonly ICameraService _cameraService;
@@ -33,12 +34,12 @@ namespace ECS
 
         public void Init(IEcsSystems systems)
         {
-            _creator.OnNewPlayerEvent += InitializePlayer;
+            _creator.OnNewUnitEvent += InitializePlayer;
         }
 
         public void Destroy(IEcsSystems systems)
         {
-            _creator.OnNewPlayerEvent -= InitializePlayer;
+            _creator.OnNewUnitEvent -= InitializePlayer;
         }
 
         private void InitializePlayer(PlayerData data)
@@ -49,29 +50,29 @@ namespace ECS
                 Quaternion.identity
             );
             unit.View.Initialize(Layers.PlayerLayer);
-            var playerEntity = _world.Value.NewEntity();
-            var packedPlayer = _world.Value.PackEntity(playerEntity);
+            var entity = _world.Value.NewEntity();
+            var packEntity = _world.Value.PackEntity(entity);
             
             var entityView = unit.View.gameObject.GetOrAddComponent<EntityView>();
-            entityView.Initialize(packedPlayer);
+            entityView.Initialize(packEntity);
 
-            _unitPool.Value.Add(playerEntity).Value = unit;
-            _inputPool.Value.Add(playerEntity);
-            _playerTagPool.Value.Add(playerEntity);
-            ref LayerComponent layerComponent = ref _layerPool.Value.Add(playerEntity);
+            _unitPool.Value.Add(entity).Value = unit;
+            _inputPool.Value.Add(entity);
+            _playerTagPool.Value.Add(entity);
+            ref LayerComponent layerComponent = ref _layerPool.Value.Add(entity);
             layerComponent.Value = Layers.PlayerLayer;
             layerComponent.EnemyLayer = Layers.EnemyLayer;
-            ref RigidbodyComponent rbComponent = ref _rbPool.Value.Add(playerEntity);
+            ref RigidbodyComponent rbComponent = ref _rbPool.Value.Add(entity);
             rbComponent.Value = unit.View.gameObject.GetComponent<Rigidbody>();
             
 
-            ref var transformComponent = ref _transformPool.Value.Add(playerEntity);
+            ref var transformComponent = ref _transformPool.Value.Add(entity);
             transformComponent.Value = unit.View.transform;
 
-            ref var stats = ref _statsPool.Value.Add(playerEntity);
+            ref var stats = ref _statsPool.Value.Add(entity);
             stats.Health = data.Stats.Health;
             stats.MaxHealth = data.Stats.Health;
-            stats.Speed = data.Stats.Speed;
+            _speedPool.Value.Add(entity).Value = data.Speed;
 
             _cameraService.SetTarget(unit.View.transform);
 
@@ -79,7 +80,7 @@ namespace ECS
             foreach (var weapon in data.Weapons)
             {
                 ref var weaponEvent = ref _eventWorld.Value.SendEvent<WeaponCreateEvent>();
-                weaponEvent.Owner = packedPlayer;
+                weaponEvent.Owner = packEntity;
                 weaponEvent.Value = weapon;
             }
         }

@@ -28,40 +28,37 @@ namespace ECS
                 if (!_weaponMap.TryGetWeapons(playerEntity, out IReadOnlyList<int> weapons) || weapons.Count == 0)
                     return;
 
-                ref TransformComponent playerTransform = ref _playerFilter.Pools.Inc3.Get(playerEntity);
+                ref TransformComponent transform = ref _playerFilter.Pools.Inc3.Get(playerEntity);
                 bool hasTarget = false;
-                Vector3 playerPos = playerTransform.Value.position;
-                Vector3 targetPos = playerPos;
+                Vector3 ownerPos = transform.Value.position;
+                Vector3 targetPos = ownerPos;
                 float distanceSqr = float.MaxValue;
                 foreach (var enemyEntity in _enemyFilter.Value)
                 {
-                    ref TransformComponent enemyTransform = ref _playerFilter.Pools.Inc3.Get(enemyEntity);
+                    ref TransformComponent enemyTransform = ref _enemyFilter.Pools.Inc3.Get(enemyEntity);
                     Vector3 enemyPos = enemyTransform.Value.position;
-                    var targetDistanceSqr = (enemyPos - playerPos).sqrMagnitude;
+                    var targetDistanceSqr = enemyPos.SqrDistance(ownerPos);
                     if (targetDistanceSqr < distanceSqr)
                     {
+                        distanceSqr = targetDistanceSqr;
                         hasTarget = true;
                         targetPos = enemyPos;
                     }
                 }
 
-                //test
                 if (!hasTarget)
                 {
-                    hasTarget = true;
-                    targetPos = new Vector3(playerPos.x + _randomizer.GetRandom(-10f, 10f), playerPos.y,
-                        playerPos.z + _randomizer.GetRandom(-10f, 10f));
+                    targetPos = new Vector3(ownerPos.x + _randomizer.GetRandom(-10f, 10f), ownerPos.y,
+                        ownerPos.z + _randomizer.GetRandom(-10f, 10f));
                 }
 
-                if (hasTarget)
+
+                for (var index = 0; index < weapons.Count; index++)
                 {
-                    for (var index = 0; index < weapons.Count; index++)
+                    var weapon = weapons[index];
+                    if (_weaponPool.Value.Has(weapon))
                     {
-                        var weapon = weapons[index];
-                        if (_weaponPool.Value.Has(weapon))
-                        {
-                            _targetPool.Value.Add(weapon).TargetPosition =  targetPos;
-                        }
+                        _targetPool.Value.Add(weapon).TargetPosition = targetPos;
                     }
                 }
             }

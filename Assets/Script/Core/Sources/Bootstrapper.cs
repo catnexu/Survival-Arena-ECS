@@ -2,6 +2,7 @@
 using ECS;
 using Infrastructure;
 using Input;
+using Navigation;
 using UI;
 using Unit;
 using UnityEngine;
@@ -33,15 +34,19 @@ namespace Core
             CameraScope.Build(_locator, _camera);
             UIScope.Build(_locator, _interface);
             WeaponScope.Build(_locator);
+            NavigationScope.Build(_locator);
 
             _locator.Register<IPlayerCreator, PlayerController>(new PlayerController());
+            _locator.Register<IEnemyCreator, EnemyController>(new EnemyController(_locator.Resolve<IFieldViewProvider>(),
+                _locator.Resolve<ITickController>(), _locator.Resolve<IRandomizer>(), _locator.Resolve<INavigationGridService>()));
             EcsScope.Build(_locator);
             StartGame();
         }
 
         private void StartGame()
         {
-            GameController gameController = new GameController(_gameConfig, _locator.Resolve<IEcsService>(), _locator.Resolve<PlayerController>());
+            GameController gameController = new GameController(_gameConfig, _locator.Resolve<IEcsService>(), _locator.Resolve<PlayerController>(),
+                _locator.Resolve<EnemyController>());
             _eventSystem.gameObject.SetActive(true);
             gameController.Start();
         }

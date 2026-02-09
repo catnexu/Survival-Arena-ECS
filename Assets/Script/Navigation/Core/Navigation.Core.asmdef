@@ -1,0 +1,17 @@
+{
+    "name": "Navigation.Core",
+    "rootNamespace": "",
+    "references": [
+        "GUID:aec93830d5674831890f4df82ad648a3",
+        "GUID:dd09f1c506374efbaaf678bdfc3af5a3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
