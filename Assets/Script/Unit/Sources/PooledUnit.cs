@@ -7,7 +7,7 @@ namespace Unit
         private readonly IPoolService _poolService;
         private readonly UnitView _view;
 
-        public PooledUnit(string name, IPoolService poolService, UnitView view) : base(name, view.transform)
+        public PooledUnit(IPoolService poolService, UnitView view) : base(view)
         {
             _poolService = poolService;
             _view = view;

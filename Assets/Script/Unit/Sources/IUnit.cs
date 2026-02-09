@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-
-namespace Unit
+﻿namespace Unit
 {
     public interface IUnit
     {
-        Transform Transform { get; }
+        UnitView View { get; }
         void Destroy();
     }
 }

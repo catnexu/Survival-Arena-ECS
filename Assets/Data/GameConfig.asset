@@ -17,3 +17,5 @@ MonoBehaviour:
     _stats:
       _health: 100
       _speed: 7
+    _weapons:
+    - Gun

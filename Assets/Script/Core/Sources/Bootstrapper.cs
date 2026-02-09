@@ -32,7 +32,7 @@ namespace Core
             InputScope.Build(_locator);
             CameraScope.Build(_locator, _camera);
             UIScope.Build(_locator, _interface);
-            //WeaponScope.Build(_locator);
+            WeaponScope.Build(_locator);
 
             _locator.Register<IPlayerCreator, PlayerController>(new PlayerController());
             EcsScope.Build(_locator);

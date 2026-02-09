@@ -7,13 +7,11 @@ namespace Unit
     {
         public event Action<IUnit> OnDestroy;
         private bool _destroyed;
-        public string Name { get; }
-        public Transform Transform { get; }
+        public UnitView View { get; }
 
-        protected Unit(string name, Transform transform)
+        protected Unit(UnitView view)
         {
-            Transform = transform;
-            Name = name;
+            View = view;
         }
 
         public void Destroy()

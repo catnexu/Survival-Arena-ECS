@@ -1,0 +1,18 @@
+{
+    "name": "ECS.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d8022e391f0d48e0bc63179601d2f669"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

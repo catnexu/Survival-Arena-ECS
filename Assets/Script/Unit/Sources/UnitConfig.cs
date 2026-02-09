@@ -2,6 +2,7 @@
 
 namespace Unit
 {
+    [CreateAssetMenu(menuName = "Unit/" + nameof(UnitConfig), fileName = nameof(UnitConfig))]
     public abstract class UnitConfig : ScriptableObject
     {
         [SerializeField] private GameObject _prefab;

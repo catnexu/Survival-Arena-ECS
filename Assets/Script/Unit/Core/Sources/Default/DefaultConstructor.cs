@@ -19,17 +19,16 @@ namespace Unit
         {
             if (config is DefaultConfig target)
             {
-                return CreateUnit(args, target, position, rotation);
+                return CreateUnit(target, position, rotation);
             }
 
             throw new Exception("Invalid config type");
         }
 
-        private IUnit CreateUnit(RequestDto args, DefaultConfig config, Vector3 position, Quaternion rotation)
+        private IUnit CreateUnit(DefaultConfig config, Vector3 position, Quaternion rotation)
         {
             UnitView view = _poolService.Instantiate<UnitView>(config.Prefab, position, rotation);
-            view.Initialize(args.OwnerLayer);
-            PooledUnit unit = new PooledUnit(args.Id, _poolService, view);
+            PooledUnit unit = new PooledUnit(_poolService, view);
             return unit;
         }
     }

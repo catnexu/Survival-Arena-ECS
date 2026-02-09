@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d79f0eb47949a1881a94a8be5758d8, type: 3}
   m_Name: WeaponConfigDatabase
   m_EditorClassIdentifier: Weapon.Core::Weapon.WeaponConfigDatabase
-  _configs: []
+  _configs:
+  - {fileID: 11400000, guid: fe6cbcff4d7f18d4d9aad1c89f7a895b, type: 2}

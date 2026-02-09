@@ -12,6 +12,10 @@ namespace ECS
             systems.Add(new OneFrameSystem<T>(systems.GetWorld(worldName)));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEcsSystems OneFrameSystem<T>(this IEcsSystems systems, EcsWorld world) where T : struct =>
+            systems.Add(new OneFrameSystem<T>(world));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEcsSystems DelayedAddComponentSystem<T>(this IEcsSystems systems, ITimeManager timeService, string worldName = null)
             where T : struct =>
             systems.Add(new DelayTimeAddSystem<T>(timeService, systems.GetWorld(worldName)));

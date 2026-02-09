@@ -9,7 +9,7 @@ namespace Core
         
         public void Start(PlayerConfig config)
         {
-            OnNewPlayerEvent?.Invoke(new PlayerData(config.Id, config.Stats));
+            OnNewPlayerEvent?.Invoke(new PlayerData(config.Id, config.Stats, config.Weapons));
         }
     }
 }

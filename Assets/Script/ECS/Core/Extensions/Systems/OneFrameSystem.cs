@@ -21,6 +21,7 @@ namespace ECS
         {
             foreach (var i in _filter)
             {
+                
                 _pool.Del(i);
             }
         }

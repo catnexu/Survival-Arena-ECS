@@ -35,5 +35,17 @@ namespace ECS
                 pool.Del(entity);
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryGet<T>(this EcsPool<T> pool, int entity, ref T component) where T : struct
+        {
+            if (pool.Has(entity))
+            {
+                component = ref pool.Get(entity);
+                return true;
+            }
+
+            return false;
+        }
     }
 }

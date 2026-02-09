@@ -12,9 +12,9 @@ namespace ECS
         {
             foreach (var entity in _filter.Value)
             {
-                ref var input = ref _filter.Pools.Inc2.Get(entity);
-                ref var rb = ref _filter.Pools.Inc3.Get(entity);
-                ref var stats = ref _filter.Pools.Inc4.Get(entity);
+                ref InputMoveComponent input = ref _filter.Pools.Inc2.Get(entity);
+                ref RigidbodyComponent rb = ref _filter.Pools.Inc3.Get(entity);
+                ref UnitStatsComponent stats = ref _filter.Pools.Inc4.Get(entity);
                 Vector3 moveDirection = new Vector3(input.Value.x, 0f, input.Value.y).normalized;
                 Vector3 targetVelocity = moveDirection * stats.Speed;
                 targetVelocity.y = rb.Value.linearVelocity.y;
