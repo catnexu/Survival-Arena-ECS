@@ -13,6 +13,7 @@ namespace ECS
         private readonly EcsPoolInject<LayerComponent> _layerPool = default;
         private readonly EcsPoolInject<WeaponComponent> _weaponPool = default;
         private readonly EcsPoolInject<GunComponent> _gunPool = default;
+        private readonly EcsPoolInject<SwordComponent> _swordPool = default;
         private readonly EcsPoolInject<TransformComponent> _transformPool = default;
         private readonly EcsPoolInject<WeaponMuzzleComponent> _muzzlePool = default;
         private readonly IWeaponConfigLoader _loader;
@@ -60,13 +61,27 @@ namespace ECS
             muzzle.localPosition = Vector3.up;
             _muzzlePool.Value.Add(weaponEntity).Value = muzzle;
 
-            if (config is GunConfig gunConfig)
+            switch (config)
             {
-                ref GunComponent gun = ref _gunPool.Value.Add(weaponEntity);
-                gun.ProjectileDamage = gunConfig.ProjectileDamage;
-                gun.ProjectilePrefab = gunConfig.ProjectilePrefab;
-                gun.ProjectileSpeed = gunConfig.ProjectileSpeed;
-                gun.ProjectileLifetime = gunConfig.ProjectileLifetime;
+                case GunConfig gunConfig:
+                {
+                    ref GunComponent gun = ref _gunPool.Value.Add(weaponEntity);
+                    gun.ProjectileDamage = gunConfig.ProjectileDamage;
+                    gun.ProjectilePrefab = gunConfig.ProjectilePrefab;
+                    gun.ProjectileSpeed = gunConfig.ProjectileSpeed;
+                    gun.ProjectileLifetime = gunConfig.ProjectileLifetime;
+                    break;
+                }
+                case SwordConfig swordConfig:
+                {
+                    ref SwordComponent sword = ref _swordPool.Value.Add(weaponEntity);
+                    sword.Damage = swordConfig.Damage;
+                    sword.Range = swordConfig.Range;
+                    Color color = Random.ColorHSV();
+                    color.a = 0.3f;
+                    sword.DrawColor = color;
+                    break;
+                }
             }
 
             _weaponMap.AddWeapon(ownerUnpacked, weaponEntity);

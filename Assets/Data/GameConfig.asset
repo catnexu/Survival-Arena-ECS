@@ -24,7 +24,8 @@ MonoBehaviour:
     - _id: Enemy_1
       _stats:
         _health: 100
-      _weapons: []
+      _weapons:
+      - Sword
       _agentConfig:
         _agentTypeId: 0
         _baseOffset: 0

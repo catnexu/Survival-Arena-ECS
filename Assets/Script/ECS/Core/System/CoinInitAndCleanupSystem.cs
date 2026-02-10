@@ -55,7 +55,7 @@ namespace ECS
             ref CoinComponent coinComponent = ref _coinPool.Value.Add(entity);
             coinComponent.View = coin;
             coinComponent.Value = value;
-            coinComponent.PickRangeSqr = pickRange;
+            coinComponent.PickRangeSqr = pickRange * pickRange;
         }
     }
 }

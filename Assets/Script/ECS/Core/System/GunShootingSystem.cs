@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using Infrastructure;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
