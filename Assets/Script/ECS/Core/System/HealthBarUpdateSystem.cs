@@ -16,9 +16,7 @@ namespace ECS
                 ref UnitHealthComponent health = ref _filter.Pools.Inc1.Get(entity);
                 ref HealthBarViewComponent healthBarView = ref _filter.Pools.Inc2.Get(entity);
                 ref TransformComponent transform = ref _filter.Pools.Inc3.Get(entity);
-
                 healthBarView.Value.UpdateHealth(health.Health, health.MaxHealth);
-
                 Vector3 worldPosition = transform.Value.position + Vector3.forward;
                 healthBarView.Value.Transform.SetPositionAndRotation(worldPosition, s_healthBarRotation);
             }

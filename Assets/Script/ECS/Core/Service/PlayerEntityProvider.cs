@@ -22,6 +22,7 @@ namespace ECS
             foreach (var i in _playerFilter)
             {
                 ref var transform = ref _transformPool.Get(i);
+                entity = i;
                 position = transform.Value.position;
                 return true;
             }

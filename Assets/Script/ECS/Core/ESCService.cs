@@ -32,7 +32,7 @@ namespace ECS
                 .AddWorld(eventWorld, WorldNames.EVENT)
                 .Add(new InputMoveUpdateSystem(_serviceLocator.Resolve<IInputService>()))
                 .Add(new PlayerInitSystem(_serviceLocator.Resolve<IPlayerFactory>(), _serviceLocator.Resolve<ICameraService>(),
-                    _serviceLocator.Resolve<IUnitSpawner>()))
+                    _serviceLocator.Resolve<IUnitSpawner>(), _serviceLocator.Resolve<IPlayerHudView>()))
                 .Add(new EnemyInitSystem(_serviceLocator.Resolve<IEnemyFactory>(), _serviceLocator.Resolve<IUnitSpawner>(),
                     _serviceLocator.Resolve<IHealthBarFactory>()))
                 .Add(new WeaponInitSystem(_serviceLocator.Resolve<IWeaponConfigLoader>(), _weaponMap, _serviceLocator.Resolve<IPoolService>()))
@@ -45,7 +45,9 @@ namespace ECS
                 .Add(new EnemyDeathSystem(_weaponMap))
                 .Add(new CoinInitAndCleanupSystem(_serviceLocator.Resolve<ICoinsFactory>()))
                 .Add(new CoinPickupSystem(playerEntityProvider))
+                .Add(new CoinStoreSystem())
                 .Add(new HealthBarUpdateSystem())
+                .Add(new PlayerHudUpdateSystem())
 #if UNITY_EDITOR
                 .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem())
                 .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem(WorldNames.EVENT))

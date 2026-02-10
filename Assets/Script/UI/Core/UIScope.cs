@@ -11,6 +11,7 @@ namespace UI
             storage.FieldViewProvider.Initialize(storage.UICamera);
             locator.Register<IFieldViewProvider>(storage.FieldViewProvider);
             locator.Register<IHealthBarFactory>(new HealthBarFactory(storage.HealthBarPrefab, locator.Resolve<IPoolService>()));
+            locator.Register<IPlayerHudView>(storage.PlayerHud);
         }
     }
 }

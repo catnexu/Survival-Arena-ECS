@@ -3,15 +3,12 @@ using Leopotam.EcsLite.Di;
 
 namespace ECS
 {
-    internal sealed class CoinStorageSystem : IEcsRunSystem
+    internal sealed class CoinStoreSystem : IEcsRunSystem
     {
         private readonly EcsWorldInject _world = default;
         private readonly EcsFilterInject<Inc<CoinPickEvent>> _eventFilter = WorldNames.EVENT;
         private readonly EcsPoolInject<UnitCoinStorageComponent> _storagePool = default;
-        public CoinStorageSystem()
-        {
-            
-        }
+
         public void Run(IEcsSystems systems)
         {
             foreach (var i in _eventFilter.Value)
