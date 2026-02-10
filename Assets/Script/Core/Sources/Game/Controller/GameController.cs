@@ -35,6 +35,8 @@ namespace Core
 
         private void StartGame()
         {
+            _currentController?.Dispose();
+            _currentController = null;
             _presenter.Hide();
             _currentController = _ecsService.CreateController();
             _currentController.Start();
@@ -49,8 +51,6 @@ namespace Core
             _playerController.OnGameOver -= OnGameOver;
             _enemyController.Stop();
             _coinsController.Stop();
-            _currentController?.Dispose();
-            _currentController = null;
             _presenter.ShowRestart(StartGame, score);
         }
     }

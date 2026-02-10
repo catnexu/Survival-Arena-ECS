@@ -8,7 +8,6 @@ namespace ECS
     {
         private readonly EcsFilterInject<Inc<UnitComponent, EnemyTag, UnitDeadComponent>, Exc<DestroyTag>> _filter = default;
         private readonly EcsPoolInject<DestroyTag> _destroyPool = default;
-        private readonly EcsPoolInject<WeaponComponent> _weaponPool = default;
         private readonly IUnitWeaponMap _weaponMap;
 
         public EnemyDeathSystem(IUnitWeaponMap weaponMap)
@@ -26,10 +25,7 @@ namespace ECS
                     for (var i = 0; i < weapons.Count; i++)
                     {
                         var weapon = weapons[i];
-                        if (_weaponPool.Value.Has(weapon))
-                        {
-                            _destroyPool.Value.Add(weapon);
-                        }
+                        _destroyPool.Value.Add(weapon);
                     }
 
                     _weaponMap.Clean(entity);

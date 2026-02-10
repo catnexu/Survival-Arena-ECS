@@ -5,9 +5,14 @@ namespace ECS
 {
     internal sealed class UnitCleanupSystem : IEcsPostRunSystem, IEcsDestroySystem
     {
+        private readonly IUnitWeaponMap _weaponMap;
         private readonly EcsFilterInject<Inc<UnitComponent, DestroyTag>> _filter = default;
         private readonly EcsFilterInject<Inc<UnitComponent>> _onDestroyFilter = default;
 
+        public UnitCleanupSystem(IUnitWeaponMap weaponMap)
+        {
+            _weaponMap = weaponMap;
+        }
         public void PostRun(IEcsSystems systems)
         {
             foreach (var entity in _filter.Value)

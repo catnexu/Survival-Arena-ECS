@@ -8,7 +8,7 @@ namespace ECS
     {
         private readonly EcsWorldInject _world = default;
         private readonly EcsFilterInject<Inc<WeaponComponent, WeaponMuzzleComponent, DestroyTag>> _filter = default;
-        private readonly EcsFilterInject<Inc<WeaponComponent, WeaponMuzzleComponent>> _onDestroyFilter = default;
+        private readonly EcsFilterInject<Inc<WeaponMuzzleComponent>> _onDestroyFilter = default;
         private readonly IUnitWeaponMap _weaponMap;
         private readonly IPoolService _poolService;
 
@@ -37,7 +37,7 @@ namespace ECS
         {
             foreach (var entity in _onDestroyFilter.Value)
             {
-                ref WeaponMuzzleComponent muzzle = ref _onDestroyFilter.Pools.Inc2.Get(entity);
+                ref WeaponMuzzleComponent muzzle = ref _onDestroyFilter.Pools.Inc1.Get(entity);
                 _poolService.Destroy(muzzle.Value.gameObject);
             }
         }

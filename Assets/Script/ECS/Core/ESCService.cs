@@ -44,6 +44,7 @@ namespace ECS
                 .Add(new ProjectileMovementSystem(_serviceLocator.Resolve<ITimeManager>()))
                 .Add(new WeaponDamageSystem())
                 .Add(new EnemyDeathSystem(_weaponMap))
+                .Add(new PlayerDeathSystem(_weaponMap, _serviceLocator.Resolve<IGameEventsProvider>()))
                 .Add(new CoinInitAndCleanupSystem(_serviceLocator.Resolve<ICoinsFactory>()))
                 .Add(new CoinPickupSystem(playerEntityProvider))
                 .Add(new CoinStoreSystem())
@@ -53,7 +54,7 @@ namespace ECS
                 .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem())
                 .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem(WorldNames.EVENT))
 #endif
-                .Add(new UnitCleanupSystem())
+                .Add(new UnitCleanupSystem(_weaponMap))
                 .Add(new WeaponCleanupSystem(_weaponMap, _serviceLocator.Resolve<IPoolService>()))
                 .Add(new ProjectileCleanupSystem(_serviceLocator.Resolve<IPoolService>()))
                 .Add(new HealthBarCleanupSystem())

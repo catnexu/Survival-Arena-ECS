@@ -43,7 +43,7 @@ namespace Infrastructure
 
         public void Update(float deltaTime)
         {
-            for (int i = 0; i < _updateControllers.Count; i++)
+            for (int i = _updateControllers.Count - 1; i >= 0; i--)
             {
                 _updateControllers[i].UpdateController(deltaTime);
             }
@@ -51,7 +51,7 @@ namespace Infrastructure
 
         public void UnscaledUpdate(float unscaledDeltaTime)
         {
-            for (int i = 0; i < _unscaledUpdateControllers.Count; i++)
+            for (int i = _unscaledUpdateControllers.Count - 1; i >= 0; i--)
             {
                 _unscaledUpdateControllers[i].UpdateController(unscaledDeltaTime);
             }
@@ -60,7 +60,7 @@ namespace Infrastructure
 
         public void FixedUpdate(float deltaTime)
         {
-            for (int i = 0; i < _fixedControllers.Count; i++)
+            for (int i = _fixedControllers.Count - 1; i >= 0; i--)
             {
                 _fixedControllers[i].UpdateController(deltaTime);
             }
@@ -68,7 +68,7 @@ namespace Infrastructure
 
         public void LateUpdate(float deltaTime)
         {
-            for (int i = 0; i < _lateControllers.Count; i++)
+            for (int i = _lateControllers.Count - 1; i >= 0; i--)
             {
                 _lateControllers[i].UpdateController(deltaTime);
             }
@@ -76,7 +76,7 @@ namespace Infrastructure
         
         public void EachSecondUpdate()
         {
-            for (int i = 0; i < _eachSecondControllers.Count; i++)
+            for (int i = _eachSecondControllers.Count - 1; i >= 0; i--)
             {
                 _eachSecondControllers[i].UpdateController();
             }
