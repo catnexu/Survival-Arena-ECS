@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Weapon.Core::Weapon.GunConfig
   _reloadTime: 1
   _projectilePrefab: {fileID: 1462563290669493778, guid: f3fa9331a71d4a744820c390cca59e67, type: 3}
-  _projectileDamage: 250
+  _projectileDamage: 25
   _projectileSpeed: 5
   _projectileLifetime: 5
