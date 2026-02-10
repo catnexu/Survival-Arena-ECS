@@ -3,22 +3,23 @@ using Leopotam.EcsLite.Di;
 
 namespace ECS
 {
-    internal sealed class CoinInitAndCleanupSystem : IEcsRunSystem, IEcsInitSystem, IEcsDestroySystem
+    internal sealed class CoinInitAndCleanupSystem : IEcsRunSystem, IEcsPostRunSystem, IEcsInitSystem, IEcsDestroySystem
     {
         private readonly EcsWorldInject _world = default;
         private readonly EcsFilterInject<Inc<UnitComponent, TransformComponent, EnemyTag, UnitDeadComponent>, Exc<DestroyTag>> _deadFilter = default;
-        private readonly EcsFilterInject<Inc<CoinComponent>> _cleanupFilter = default;
+        private readonly EcsFilterInject<Inc<CoinComponent, DestroyTag>> _cleanupFilter = default;
+        private readonly EcsFilterInject<Inc<CoinComponent>> _onDestroyFilter = default;
         private readonly EcsPoolInject<CoinComponent> _coinPool = default;
-        private readonly ICoinsCreator _coinsCreator;
+        private readonly ICoinsFactory _coinsFactory;
 
-        public CoinInitAndCleanupSystem(ICoinsCreator coinsCreator)
+        public CoinInitAndCleanupSystem(ICoinsFactory coinsFactory)
         {
-            _coinsCreator = coinsCreator;
+            _coinsFactory = coinsFactory;
         }
 
         public void Init(IEcsSystems systems)
         {
-            _coinsCreator.OnCoinCreated += InitializeCoin;
+            _coinsFactory.OnCoinCreated += InitializeCoin;
         }
 
         public void Run(IEcsSystems systems)
@@ -26,7 +27,25 @@ namespace ECS
             foreach (var i in _deadFilter.Value)
             {
                 var position = _deadFilter.Pools.Inc2.Get(i).Value.position;
-                _coinsCreator.RequestCoin(position);
+                _coinsFactory.RequestCoin(position);
+            }
+        }
+
+        public void PostRun(IEcsSystems systems)
+        {
+            foreach (var i in _cleanupFilter.Value)
+            {
+                _coinPool.Value.Get(i).View.Destroy();
+            }
+        }
+
+        public void Destroy(IEcsSystems systems)
+        {
+            _coinsFactory.OnCoinCreated -= InitializeCoin;
+            foreach (var i in _onDestroyFilter.Value)
+            {
+                _coinPool.Value.Get(i).View.Destroy();
+                _world.Value.DelEntity(i);
             }
         }
 
@@ -37,16 +56,6 @@ namespace ECS
             coinComponent.View = coin;
             coinComponent.Value = value;
             coinComponent.PickRangeSqr = pickRange;
-        }
-
-        public void Destroy(IEcsSystems systems)
-        {
-            _coinsCreator.OnCoinCreated -= InitializeCoin;
-            foreach (var i in _cleanupFilter.Value)
-            {
-                _coinPool.Value.Get(i).View.Destroy();
-                _world.Value.DelEntity(i);
-            }
         }
     }
 }

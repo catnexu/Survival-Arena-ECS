@@ -8,8 +8,11 @@ namespace Camera
     {
         private readonly CinemachineCamera _virtualCamera;
 
+        public UnityEngine.Camera MainCamera { get; }
+
         public CameraService(UnityEngine.Camera camera)
         {
+            MainCamera = camera;
             _virtualCamera = camera.GetComponent<CinemachineCamera>();
             Assert.IsNotNull(_virtualCamera, $"Camera must contain a {nameof(CinemachineCamera)}");
         }

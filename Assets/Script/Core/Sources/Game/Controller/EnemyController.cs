@@ -8,7 +8,7 @@ using UnityEngine.AI;
 
 namespace Core
 {
-    internal sealed class EnemyController : IEnemyCreator, IUpdate
+    internal sealed class EnemyController : IEnemyFactory, IUpdate
     {
         private const float Margin = 2f;
         private const float ExtraMargin = 4f;

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Core
 {
-    internal sealed class CoinsController : ICoinsCreator
+    internal sealed class CoinsController : ICoinsFactory
     {
         private readonly IPoolService _poolService;
         private readonly IRandomizer _randomizer;

@@ -3,6 +3,7 @@ using Infrastructure;
 using Input;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
+using UI;
 using Unit;
 using Weapon;
 
@@ -30,9 +31,10 @@ namespace ECS
             updateSystems
                 .AddWorld(eventWorld, WorldNames.EVENT)
                 .Add(new InputMoveUpdateSystem(_serviceLocator.Resolve<IInputService>()))
-                .Add(new PlayerInitSystem(_serviceLocator.Resolve<IPlayerCreator>(), _serviceLocator.Resolve<ICameraService>(),
+                .Add(new PlayerInitSystem(_serviceLocator.Resolve<IPlayerFactory>(), _serviceLocator.Resolve<ICameraService>(),
                     _serviceLocator.Resolve<IUnitSpawner>()))
-                .Add(new EnemyInitSystem(_serviceLocator.Resolve<IEnemyCreator>(), _serviceLocator.Resolve<IUnitSpawner>()))
+                .Add(new EnemyInitSystem(_serviceLocator.Resolve<IEnemyFactory>(), _serviceLocator.Resolve<IUnitSpawner>(),
+                    _serviceLocator.Resolve<IHealthBarFactory>()))
                 .Add(new WeaponInitSystem(_serviceLocator.Resolve<IWeaponConfigLoader>(), _weaponMap, _serviceLocator.Resolve<IPoolService>()))
                 .Add(new WeaponReloadSystem(_serviceLocator.Resolve<ITimeManager>()))
                 .Add(new PlayerSetTargetSystem(_serviceLocator.Resolve<IRandomizer>(), _weaponMap))
@@ -40,16 +42,20 @@ namespace ECS
                 .Add(new GunShootingSystem(_serviceLocator.Resolve<IPoolService>()))
                 .Add(new ProjectileMovementSystem(_serviceLocator.Resolve<ITimeManager>()))
                 .Add(new WeaponDamageSystem())
-                .Add(new EnemyDeathSystem())
-                .Add(new CoinInitAndCleanupSystem(_serviceLocator.Resolve<ICoinsCreator>()))
+                .Add(new EnemyDeathSystem(_weaponMap))
+                .Add(new CoinInitAndCleanupSystem(_serviceLocator.Resolve<ICoinsFactory>()))
+                .Add(new CoinPickupSystem(playerEntityProvider))
+                .Add(new HealthBarUpdateSystem())
 #if UNITY_EDITOR
                 .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem())
                 .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem(WorldNames.EVENT))
 #endif
-                .Add(new UnitCleanupSystem(_weaponMap))
+                .Add(new UnitCleanupSystem())
                 .Add(new WeaponCleanupSystem(_weaponMap, _serviceLocator.Resolve<IPoolService>()))
                 .Add(new ProjectileCleanupSystem(_serviceLocator.Resolve<IPoolService>()))
+                .Add(new HealthBarCleanupSystem())
                 .OneFrameSystem<WeaponCreateEvent>(eventWorld)
+                .OneFrameSystem<CoinPickEvent>(eventWorld)
                 .OneFrameSystem<WeaponTargetComponent>()
                 .Add(new EntityCleanupSystem(world))
                 .Add(new EntityCleanupSystem(eventWorld))

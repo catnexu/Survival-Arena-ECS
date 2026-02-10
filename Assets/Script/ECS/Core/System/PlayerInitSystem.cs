@@ -20,26 +20,27 @@ namespace ECS
         private readonly EcsPoolInject<UnitHealthComponent> _statsPool = default;
         private readonly EcsPoolInject<LayerComponent> _layerPool = default;
         private readonly EcsPoolInject<UnitSpeedComponent> _speedPool = default;
+        private readonly EcsPoolInject<UnitCoinStorageComponent> _coinStoragePool = default;
 
-        private readonly IPlayerCreator _creator;
+        private readonly IPlayerFactory _factory;
         private readonly ICameraService _cameraService;
         private readonly IUnitSpawner _spawner;
 
-        public PlayerInitSystem(IPlayerCreator creator, ICameraService cameraService, IUnitSpawner spawner)
+        public PlayerInitSystem(IPlayerFactory factory, ICameraService cameraService, IUnitSpawner spawner)
         {
-            _creator = creator;
+            _factory = factory;
             _cameraService = cameraService;
             _spawner = spawner;
         }
 
         public void Init(IEcsSystems systems)
         {
-            _creator.OnNewUnitEvent += InitializePlayer;
+            _factory.OnNewUnitEvent += InitializePlayer;
         }
 
         public void Destroy(IEcsSystems systems)
         {
-            _creator.OnNewUnitEvent -= InitializePlayer;
+            _factory.OnNewUnitEvent -= InitializePlayer;
         }
 
         private void InitializePlayer(PlayerData data)
@@ -65,9 +66,10 @@ namespace ECS
             ref RigidbodyComponent rbComponent = ref _rbPool.Value.Add(entity);
             rbComponent.Value = unit.View.gameObject.GetComponent<Rigidbody>();
             
-
             ref var transformComponent = ref _transformPool.Value.Add(entity);
             transformComponent.Value = unit.View.transform;
+            
+            _coinStoragePool.Value.Add(entity).Value = 0;
 
             ref var stats = ref _statsPool.Value.Add(entity);
             stats.Health = data.Stats.Health;
@@ -75,7 +77,6 @@ namespace ECS
             _speedPool.Value.Add(entity).Value = data.Speed;
 
             _cameraService.SetTarget(unit.View.transform);
-
 
             foreach (var weapon in data.Weapons)
             {

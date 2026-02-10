@@ -36,10 +36,10 @@ namespace Core
             WeaponScope.Build(_locator);
             NavigationScope.Build(_locator);
 
-            _locator.Register<IPlayerCreator, PlayerController>(new PlayerController());
-            _locator.Register<ICoinsCreator, CoinsController>(new CoinsController(_locator.Resolve<IPoolService>(), _locator.Resolve<IRandomizer>(),
+            _locator.Register<IPlayerFactory, PlayerController>(new PlayerController());
+            _locator.Register<ICoinsFactory, CoinsController>(new CoinsController(_locator.Resolve<IPoolService>(), _locator.Resolve<IRandomizer>(),
                 _locator.Resolve<INavigationGridService>()));
-            _locator.Register<IEnemyCreator, EnemyController>(new EnemyController(_locator.Resolve<IFieldViewProvider>(),
+            _locator.Register<IEnemyFactory, EnemyController>(new EnemyController(_locator.Resolve<IFieldViewProvider>(),
                 _locator.Resolve<ITickController>(), _locator.Resolve<IRandomizer>(), _locator.Resolve<INavigationGridService>()));
             EcsScope.Build(_locator);
             StartGame();

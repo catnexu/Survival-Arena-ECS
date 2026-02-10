@@ -3,7 +3,7 @@ using ECS;
 
 namespace Core
 {
-    internal sealed class PlayerController : IPlayerCreator
+    internal sealed class PlayerController : IPlayerFactory
     {
         public event Action<PlayerData> OnNewUnitEvent;
         

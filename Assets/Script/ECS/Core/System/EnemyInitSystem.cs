@@ -1,8 +1,8 @@
-﻿using Camera;
-using Infrastructure;
+﻿using Infrastructure;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using Navigation;
+using UI;
 using Unit;
 using UnityEngine;
 using UnityEngine.AI;
@@ -21,24 +21,27 @@ namespace ECS
         private readonly EcsPoolInject<UnitHealthComponent> _statsPool = default;
         private readonly EcsPoolInject<LayerComponent> _layerPool = default;
         private readonly EcsPoolInject<NavMeshComponent> _navMeshPool = default;
+        private readonly EcsPoolInject<HealthBarViewComponent> _healthBarPool = default;
 
-        private readonly IEnemyCreator _creator;
+        private readonly IEnemyFactory _factory;
         private readonly IUnitSpawner _spawner;
+        private readonly IHealthBarFactory _healthBarFactory;
 
-        public EnemyInitSystem(IEnemyCreator creator, IUnitSpawner spawner)
+        public EnemyInitSystem(IEnemyFactory factory, IUnitSpawner spawner, IHealthBarFactory healthBarFactory)
         {
-            _creator = creator;
+            _factory = factory;
             _spawner = spawner;
+            _healthBarFactory = healthBarFactory;
         }
 
         public void Init(IEcsSystems systems)
         {
-            _creator.OnNewUnitEvent += InitializeEnemy;
+            _factory.OnNewUnitEvent += InitializeEnemy;
         }
 
         public void Destroy(IEcsSystems systems)
         {
-            _creator.OnNewUnitEvent -= InitializeEnemy;
+            _factory.OnNewUnitEvent -= InitializeEnemy;
         }
 
         private void InitializeEnemy(EnemyData data)
@@ -70,6 +73,11 @@ namespace ECS
             ref var health = ref _statsPool.Value.Add(entity);
             health.Health = data.Stats.Health;
             health.MaxHealth = data.Stats.Health;
+
+            var healthBar = _healthBarFactory.CreateHealthBar();
+            healthBar.UpdateHealth(data.Stats.Health, data.Stats.Health);
+            
+            _healthBarPool.Value.Add(entity).Value = healthBar;
 
             foreach (var weapon in data.Weapons)
             {

@@ -209,7 +209,7 @@ Transform:
   m_GameObject: {fileID: 41349559}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 10.97, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2246,6 +2246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UI.Core::UI.UIStorage
   _uiCamera: {fileID: 41349561}
   _fieldViewProvider: {fileID: 2023070804}
+  _healthBarPrefab: {fileID: 3448729611688790909, guid: 02801a4b4099f2c43a7ac5ad45b1c5bc, type: 3}
 --- !u!1 &2029129996
 GameObject:
   m_ObjectHideFlags: 0

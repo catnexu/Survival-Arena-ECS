@@ -2,7 +2,7 @@
 
 namespace ECS
 {
-    public interface IEnemyCreator
+    public interface IEnemyFactory
     {
         event Action<EnemyData> OnNewUnitEvent;
     }

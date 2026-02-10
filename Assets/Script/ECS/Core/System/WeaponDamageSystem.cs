@@ -18,11 +18,11 @@ namespace ECS
             foreach (var i in _eventFilter.Value)
             {
                 ref var damageEvent = ref _eventFilter.Pools.Inc1.Get(i);
-                if (damageEvent.From.Unpack(_world.Value, out var fromEntity) && damageEvent.To.Unpack(_world.Value, out var toEntity))
+                if (damageEvent.From.Unpack(_world.Value, out _) && damageEvent.To.Unpack(_world.Value, out var toEntity))
                 {
-                    if (_deadPool.Value.Has(toEntity))
+                    if (!_healthPool.Value.Has(toEntity) || _deadPool.Value.Has(toEntity))
                         continue;
-                    ref UnitHealthComponent healthComponent = ref _healthPool.Value.TryGetRef(toEntity, out var success);
+                    ref UnitHealthComponent healthComponent = ref _healthPool.Value.Get(toEntity);
                     healthComponent.Health -= damageEvent.Damage;
                     if (healthComponent.Health <= 0)
                     {
