@@ -16,5 +16,13 @@ namespace Infrastructure
             locator.Register(typeof(T1), instance);
             locator.Register(typeof(T2), instance);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Register<T1, T2, T3>(this IServiceLocator locator, object instance)
+        {
+            locator.Register(typeof(T1), instance);
+            locator.Register(typeof(T2), instance);
+            locator.Register(typeof(T3), instance);
+        }
     }
 }

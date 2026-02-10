@@ -29,6 +29,11 @@ namespace Core
             _config = config;
         }
 
+        public void Stop()
+        {
+            _started = false;
+        }
+
         public void RequestCoin(Vector3 position)
         {
             if (!_started)

@@ -36,7 +36,7 @@ namespace Core
             WeaponScope.Build(_locator);
             NavigationScope.Build(_locator);
 
-            _locator.Register<IPlayerFactory, PlayerController>(new PlayerController());
+            _locator.Register<IPlayerFactory, IGameEventsProvider, PlayerController>(new PlayerController());
             _locator.Register<ICoinsFactory, CoinsController>(new CoinsController(_locator.Resolve<IPoolService>(), _locator.Resolve<IRandomizer>(),
                 _locator.Resolve<INavigationGridService>()));
             _locator.Register<IEnemyFactory, EnemyController>(new EnemyController(_locator.Resolve<IFieldViewProvider>(),
@@ -48,7 +48,7 @@ namespace Core
         private void StartGame()
         {
             GameController gameController = new GameController(_gameConfig, _locator.Resolve<IEcsService>(), _locator.Resolve<PlayerController>(),
-                _locator.Resolve<EnemyController>(), _locator.Resolve<CoinsController>());
+                _locator.Resolve<EnemyController>(), _locator.Resolve<CoinsController>(), _locator.Resolve<MenuPresenter>());
             _eventSystem.gameObject.SetActive(true);
             gameController.Start();
         }

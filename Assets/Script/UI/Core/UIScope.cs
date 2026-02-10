@@ -12,6 +12,7 @@ namespace UI
             locator.Register<IFieldViewProvider>(storage.FieldViewProvider);
             locator.Register<IHealthBarFactory>(new HealthBarFactory(storage.HealthBarPrefab, locator.Resolve<IPoolService>()));
             locator.Register<IPlayerHudView>(storage.PlayerHud);
+            locator.Register<MenuPresenter>(new MenuPresenter(storage.StartWindow, storage.RestartWindow));
         }
     }
 }
