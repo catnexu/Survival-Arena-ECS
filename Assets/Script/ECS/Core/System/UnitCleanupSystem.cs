@@ -7,6 +7,7 @@ namespace ECS
     internal sealed class UnitCleanupSystem : IEcsPostRunSystem, IEcsDestroySystem
     {
         private readonly EcsFilterInject<Inc<UnitComponent, DestroyTag>> _filter = default;
+        private readonly EcsFilterInject<Inc<UnitComponent>> _onDestroyFilter = default;
         private readonly EcsPoolInject<DestroyTag> _destroyPool = default;
         private readonly EcsPoolInject<WeaponComponent> _weaponPool = default;
         private readonly IUnitWeaponMap _weaponMap;
@@ -41,10 +42,10 @@ namespace ECS
 
         public void Destroy(IEcsSystems systems)
         {
-            foreach (var entity in _filter.Value)
+            foreach (var entity in _onDestroyFilter.Value)
             {
                 _weaponMap.Clean(entity);
-                ref var unitComponent = ref _filter.Pools.Inc1.Get(entity);
+                ref UnitComponent unitComponent = ref _onDestroyFilter.Pools.Inc1.Get(entity);
                 unitComponent.Value.Destroy();
             }
         }

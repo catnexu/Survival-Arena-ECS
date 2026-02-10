@@ -6,18 +6,18 @@ namespace ECS
 {
     internal sealed class EnemySetTargetSystem : IEcsRunSystem
     {
-        private readonly EcsFilterInject<Inc<UnitComponent, PlayerTag, TransformComponent>, Exc<DestroyTag>> _playerFilter = default;
+        private readonly IPlayerEntityProvider _playerEntityProvider;
         private readonly EcsFilterInject<Inc<UnitComponent, EnemyTag, TransformComponent, NavMeshComponent>, Exc<DestroyTag>> _enemyFilter = default;
+
+        public EnemySetTargetSystem(IPlayerEntityProvider playerEntityProvider)
+        {
+            _playerEntityProvider = playerEntityProvider;
+        }
 
         public void Run(IEcsSystems systems)
         {
-            Vector3 playerPos = Vector3.zero;
-            foreach (var entity in _playerFilter.Value)
-            {
-                ref TransformComponent playerTransform = ref _playerFilter.Pools.Inc3.Get(entity);
-                playerPos = playerTransform.Value.position;
-                break;
-            }
+            if(!_playerEntityProvider.TryGetNearestPlayer(Vector3.zero, out var playerEntity,  out var playerPos))
+                return;
 
             foreach (int entity in _enemyFilter.Value)
             {

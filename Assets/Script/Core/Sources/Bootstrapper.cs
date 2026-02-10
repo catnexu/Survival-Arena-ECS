@@ -37,6 +37,8 @@ namespace Core
             NavigationScope.Build(_locator);
 
             _locator.Register<IPlayerCreator, PlayerController>(new PlayerController());
+            _locator.Register<ICoinsCreator, CoinsController>(new CoinsController(_locator.Resolve<IPoolService>(), _locator.Resolve<IRandomizer>(),
+                _locator.Resolve<INavigationGridService>()));
             _locator.Register<IEnemyCreator, EnemyController>(new EnemyController(_locator.Resolve<IFieldViewProvider>(),
                 _locator.Resolve<ITickController>(), _locator.Resolve<IRandomizer>(), _locator.Resolve<INavigationGridService>()));
             EcsScope.Build(_locator);
@@ -46,7 +48,7 @@ namespace Core
         private void StartGame()
         {
             GameController gameController = new GameController(_gameConfig, _locator.Resolve<IEcsService>(), _locator.Resolve<PlayerController>(),
-                _locator.Resolve<EnemyController>());
+                _locator.Resolve<EnemyController>(), _locator.Resolve<CoinsController>());
             _eventSystem.gameObject.SetActive(true);
             gameController.Start();
         }

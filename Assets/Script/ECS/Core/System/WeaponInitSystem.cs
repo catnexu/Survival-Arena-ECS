@@ -1,10 +1,12 @@
-﻿using Leopotam.EcsLite;
+﻿using Infrastructure;
+using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
+using UnityEngine;
 using Weapon;
 
 namespace ECS
 {
-    internal sealed class WeaponInitSystem : IEcsRunSystem
+    internal sealed class WeaponInitSystem : IEcsRunSystem, IEcsDestroySystem
     {
         private readonly EcsWorldInject _world = default;
         private readonly EcsFilterInject<Inc<WeaponCreateEvent>> _eventFilter = WorldNames.EVENT;
@@ -15,11 +17,16 @@ namespace ECS
         private readonly EcsPoolInject<WeaponMuzzleComponent> _muzzlePool = default;
         private readonly IWeaponConfigLoader _loader;
         private readonly IUnitWeaponMap _weaponMap;
+        private readonly IPoolService _poolService;
+        private readonly GameObject _muzzlePrefab;
 
-        public WeaponInitSystem(IWeaponConfigLoader loader, IUnitWeaponMap weaponMap)
+        public WeaponInitSystem(IWeaponConfigLoader loader, IUnitWeaponMap weaponMap, IPoolService poolService)
         {
             _loader = loader;
             _weaponMap = weaponMap;
+            _poolService = poolService;
+            _muzzlePrefab = new GameObject("Muzzle");
+            _muzzlePrefab.SetActive(false);
         }
 
         public void Run(IEcsSystems systems)
@@ -48,7 +55,10 @@ namespace ECS
             weapon.TargetLayer = targetLayer;
 
             var ownerTransform = _transformPool.Value.Get(ownerUnpacked);
-            _muzzlePool.Value.Add(weaponEntity).Value = ownerTransform.Value;
+            var muzzle = _poolService.Instantiate<Transform>(_muzzlePrefab, Vector3.zero, Quaternion.identity);
+            muzzle.SetParent(ownerTransform.Value);
+            muzzle.localPosition = Vector3.up;
+            _muzzlePool.Value.Add(weaponEntity).Value = muzzle;
 
             if (config is GunConfig gunConfig)
             {
@@ -60,6 +70,11 @@ namespace ECS
             }
 
             _weaponMap.AddWeapon(ownerUnpacked, weaponEntity);
+        }
+
+        public void Destroy(IEcsSystems systems)
+        {
+            Object.Destroy(_muzzlePrefab);
         }
     }
 }

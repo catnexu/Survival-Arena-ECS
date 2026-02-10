@@ -12,7 +12,6 @@ namespace Core
     {
         private const float Margin = 2f;
         private const float ExtraMargin = 4f;
-        private const int MaxTryCount = 4;
         private readonly IFieldViewProvider _fieldViewProvider;
         private readonly ITickController _tickController;
         private readonly IRandomizer _randomizer;
@@ -42,6 +41,14 @@ namespace Core
             _config = config;
             _updateSub = _tickController.AddController(this);
             _tick = _config.SpawnCooldown;
+        }
+
+        public void Stop()
+        {
+            if(!_started)
+                return;
+            _started = false;
+            _updateSub?.Dispose();
         }
 
         public void UpdateController(float deltaTime)

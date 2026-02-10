@@ -26,27 +26,30 @@ namespace ECS
             var eventWorld = new EcsWorld();
             var updateSystems = new EcsSystems(world);
 
+            var playerEntityProvider = new PlayerEntityProvider(world);
             updateSystems
                 .AddWorld(eventWorld, WorldNames.EVENT)
                 .Add(new InputMoveUpdateSystem(_serviceLocator.Resolve<IInputService>()))
                 .Add(new PlayerInitSystem(_serviceLocator.Resolve<IPlayerCreator>(), _serviceLocator.Resolve<ICameraService>(),
                     _serviceLocator.Resolve<IUnitSpawner>()))
                 .Add(new EnemyInitSystem(_serviceLocator.Resolve<IEnemyCreator>(), _serviceLocator.Resolve<IUnitSpawner>()))
-                .Add(new WeaponInitSystem(_serviceLocator.Resolve<IWeaponConfigLoader>(), _weaponMap))
+                .Add(new WeaponInitSystem(_serviceLocator.Resolve<IWeaponConfigLoader>(), _weaponMap, _serviceLocator.Resolve<IPoolService>()))
                 .Add(new WeaponReloadSystem(_serviceLocator.Resolve<ITimeManager>()))
                 .Add(new PlayerSetTargetSystem(_serviceLocator.Resolve<IRandomizer>(), _weaponMap))
-                .Add(new EnemySetTargetSystem())
+                .Add(new EnemySetTargetSystem(playerEntityProvider))
                 .Add(new GunShootingSystem(_serviceLocator.Resolve<IPoolService>()))
                 .Add(new ProjectileMovementSystem(_serviceLocator.Resolve<ITimeManager>()))
+                .Add(new WeaponDamageSystem())
+                .Add(new EnemyDeathSystem())
+                .Add(new CoinInitAndCleanupSystem(_serviceLocator.Resolve<ICoinsCreator>()))
 #if UNITY_EDITOR
                 .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem())
                 .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem(WorldNames.EVENT))
 #endif
                 .Add(new UnitCleanupSystem(_weaponMap))
-                .Add(new WeaponCleanupSystem(_weaponMap))
+                .Add(new WeaponCleanupSystem(_weaponMap, _serviceLocator.Resolve<IPoolService>()))
                 .Add(new ProjectileCleanupSystem(_serviceLocator.Resolve<IPoolService>()))
                 .OneFrameSystem<WeaponCreateEvent>(eventWorld)
-                .OneFrameSystem<DamageEvent>(eventWorld)
                 .OneFrameSystem<WeaponTargetComponent>()
                 .Add(new EntityCleanupSystem(world))
                 .Add(new EntityCleanupSystem(eventWorld))

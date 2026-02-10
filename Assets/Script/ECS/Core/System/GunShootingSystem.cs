@@ -37,10 +37,8 @@ namespace ECS
                 ref WeaponMuzzleComponent muzzle = ref _filter.Pools.Inc3.Get(entity);
                 ref WeaponTargetComponent target = ref _filter.Pools.Inc4.Get(entity);
 
-                //условно мы тут знаем, что стреляем из пивота овнера в пивот врага, поэтому хардкодим повышение оси,
-                //по хорожему при создании оружия создавать бы вьюху, и целить куда-то в хитбоксы
-                Vector3 startPos = muzzle.Value.position + Vector3.up;
-                Vector3 endPos = target.TargetPosition + Vector3.up;
+                Vector3 startPos = muzzle.Value.position;
+                Vector3 endPos = target.TargetPosition.WithY(muzzle.Value.position.y);
                 Vector3 direction = (endPos - startPos).normalized;
 
                 int projectileEntity = _world.Value.NewEntity();

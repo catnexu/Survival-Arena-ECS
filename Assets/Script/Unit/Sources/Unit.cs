@@ -1,11 +1,7 @@
-using System;
-using UnityEngine;
-
 namespace Unit
 {
     public abstract class Unit : IUnit
     {
-        public event Action<IUnit> OnDestroy;
         private bool _destroyed;
         public UnitView View { get; }
 
@@ -19,7 +15,6 @@ namespace Unit
             if (_destroyed)
                 return;
             _destroyed = true;
-            OnDestroy?.Invoke(this);
             OnDestroyProtected();
         }
 

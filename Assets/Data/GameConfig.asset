@@ -40,4 +40,9 @@ MonoBehaviour:
         _autoTraverseOffMeshLink: 0
         _autoRepath: 1
         _areaMask: 1
-    _spawnCooldown: 1
+    _spawnCooldown: 4
+  _coinsConfig:
+    _prefab: {fileID: -1387016834168744980, guid: c5bcdc7316f360b4a9803c1527af22e0, type: 3}
+    _dropChance: 0.5
+    _valueRange: {x: 1, y: 20}
+    _pickUpDistance: 3
