@@ -66,7 +66,6 @@ namespace ECS
                 transformComponent.Value = view.transform;
 
                 weapon.IsCharged = false;
-                weapon.TimeSinceLastShot = 0f;
 
                 _filter.Pools.Inc2.Del(entity);
             }

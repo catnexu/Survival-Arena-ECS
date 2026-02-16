@@ -28,7 +28,7 @@ namespace ECS
                     if (weapon.TimeSinceLastShot >= weapon.ReloadTime)
                     {
                         weapon.IsCharged = true;
-                        weapon.TimeSinceLastShot = 0f;
+                        weapon.TimeSinceLastShot -= weapon.ReloadTime;
                     }
                 }
 

@@ -50,7 +50,6 @@ namespace ECS
 
                 DrawInGame.Circle(attackPosition, s_drawRotation, sword.Range, sword.DrawColor, 0.5f);
                 weapon.IsCharged = false;
-                weapon.TimeSinceLastShot = 0f;
                 _weaponFilter.Pools.Inc2.Del(weaponEntity);
             }
         }
