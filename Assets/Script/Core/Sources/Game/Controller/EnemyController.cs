@@ -10,8 +10,6 @@ namespace Core
 {
     internal sealed class EnemyController : IEnemyFactory, IUpdate
     {
-        private const float Margin = 2f;
-        private const float ExtraMargin = 4f;
         private readonly IFieldViewProvider _fieldViewProvider;
         private readonly ITickController _tickController;
         private readonly IRandomizer _randomizer;
@@ -45,7 +43,7 @@ namespace Core
 
         public void Stop()
         {
-            if(!_started)
+            if (!_started)
                 return;
             _started = false;
             _updateSub?.Dispose();
@@ -56,7 +54,7 @@ namespace Core
             _tick -= deltaTime;
             if (_tick <= 0)
             {
-                _tick = _config.SpawnCooldown;
+                _tick += _config.SpawnCooldown;
                 SpawnEnemy();
             }
         }
@@ -75,17 +73,17 @@ namespace Core
             int side = _randomizer.GetRandom(0, 4);
             var outOfViewPosition = side switch
             {
-                0 => new Vector3(bottomLeft.x - Margin - _randomizer.GetRandom(0f, ExtraMargin),
-                    0f, _randomizer.GetRandom(bottomLeft.z - ExtraMargin, topRight.z + ExtraMargin)),
-                1 => new Vector3(topRight.x + Margin + _randomizer.GetRandom(0f, ExtraMargin),
-                    0f, _randomizer.GetRandom(bottomLeft.z - ExtraMargin, topRight.z + ExtraMargin)),
-                2 => new Vector3(_randomizer.GetRandom(bottomLeft.x - ExtraMargin, topRight.x + ExtraMargin),
-                    0f, bottomLeft.z - Margin - _randomizer.GetRandom(0f, ExtraMargin)),
-                _ => new Vector3(_randomizer.GetRandom(bottomLeft.x - ExtraMargin, topRight.x + ExtraMargin),
-                    0f, topRight.z + Margin + _randomizer.GetRandom(0f, ExtraMargin))
+                0 => new Vector3(bottomLeft.x - _config.ViewSpawnMargin - _randomizer.GetRandom(0f, _config.ViewSpawnExtraMargin),
+                    0f, _randomizer.GetRandom(bottomLeft.z - _config.ViewSpawnExtraMargin, topRight.z + _config.ViewSpawnExtraMargin)),
+                1 => new Vector3(topRight.x + _config.ViewSpawnMargin + _randomizer.GetRandom(0f, _config.ViewSpawnExtraMargin),
+                    0f, _randomizer.GetRandom(bottomLeft.z - _config.ViewSpawnExtraMargin, topRight.z + _config.ViewSpawnExtraMargin)),
+                2 => new Vector3(_randomizer.GetRandom(bottomLeft.x - _config.ViewSpawnExtraMargin, topRight.x + _config.ViewSpawnExtraMargin),
+                    0f, bottomLeft.z - _config.ViewSpawnMargin - _randomizer.GetRandom(0f, _config.ViewSpawnExtraMargin)),
+                _ => new Vector3(_randomizer.GetRandom(bottomLeft.x - _config.ViewSpawnExtraMargin, topRight.x + _config.ViewSpawnExtraMargin),
+                    0f, topRight.z + _config.ViewSpawnMargin + _randomizer.GetRandom(0f, _config.ViewSpawnExtraMargin))
             };
 
-            return _navigationGridService.GetRandomPositionInRadius(NavigationGridType.Humanoid, outOfViewPosition, 10f);
+            return _navigationGridService.GetRandomPositionInRadius(NavigationGridType.Humanoid, outOfViewPosition, _config.SpawnRadius);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Navigation
     {
         public static void Build(IServiceLocator locator)
         {
-            locator.Register<INavigationGridService>(new NavigationGridService(locator.Resolve<IRandomizer>()));
+            locator.Register<INavigationGridService>(new NavigationGridService());
         }
     }
 }
