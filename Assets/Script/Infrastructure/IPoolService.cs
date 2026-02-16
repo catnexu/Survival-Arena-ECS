@@ -6,5 +6,6 @@ namespace Infrastructure
     {
         T Instantiate<T>(GameObject prefab, Vector3 position, Quaternion rotation, float lifeTime = -1f) where T : Component;
         void Destroy(GameObject gameObject);
+        void Clear(GameObject prefab);
     }
 }

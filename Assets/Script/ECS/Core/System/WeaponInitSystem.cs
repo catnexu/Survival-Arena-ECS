@@ -89,6 +89,7 @@ namespace ECS
 
         public void Destroy(IEcsSystems systems)
         {
+            _poolService.Clear(_muzzlePrefab);
             Object.Destroy(_muzzlePrefab);
         }
     }

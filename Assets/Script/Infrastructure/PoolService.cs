@@ -119,6 +119,7 @@ namespace Infrastructure
                 viewPool.Release(view);
                 throw new Exception($"{prefab.name} does not have a component of type {typeof(T).Name}");
             }
+
             view.transform.SetPositionAndRotation(position, rotation);
             if (lifeTime > 0f)
             {
@@ -126,6 +127,14 @@ namespace Infrastructure
             }
 
             return component;
+        }
+
+        public void Clear(GameObject prefab)
+        {
+            if (_poolMap.Remove(prefab.name, out ObjectPool<GameObject> viewPool))
+            {
+                viewPool.Clear();
+            }
         }
 
         public void Destroy(GameObject gameObject)
